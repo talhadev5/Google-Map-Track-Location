@@ -1,236 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tophotels/modules/resources/app_colors.dart';
 import 'package:tophotels/modules/view/chip/chip.dart';
 import 'package:tophotels/modules/viewmodel/friends_logic.dart';
 
-// class FriendsPage extends StatelessWidget {
-//   FriendsPage({super.key});
-//   final controller = Get.put(FriendsLogic());
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: AppColors.primaryBlue.withOpacity(0.08),
-//       body: SafeArea(
-//         child: Padding(
-//           padding: const EdgeInsets.all(8.0),
-//           child: SingleChildScrollView(
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 const Row(
-//                   children: [
-//                     Text(
-//                       'Friends',
-//                       style: TextStyle(
-//                           color: AppColors.black,
-//                           fontWeight: FontWeight.bold,
-//                           fontSize: 22),
-//                     )
-//                   ],
-//                 ),
-//                 SizedBox(
-//                   height: Get.height * .02,
-//                 ),
-//                 Row(
-//                   children: [
-//                     Expanded(
-//                       child: CupertinoSearchTextField(
-//                         suffixMode: OverlayVisibilityMode.always,
-//                         suffixIcon: const Icon(
-//                           CupertinoIcons.mic_fill,
-//                           color: AppColors.grey,
-//                         ),
-//                         onChanged: (value) {
-//                           controller.searchQuery.value = value;
-//                         },
-//                       ),
-//                     ),
-//                     Obx(() {
-//                       return controller.searchQuery.value.isNotEmpty
-//                           ? GestureDetector(
-//                               onTap: () {
-//                                 // Clear the search query
-//                                 controller.searchQuery.value = '';
-//                               },
-//                               child: const Padding(
-//                                 padding: EdgeInsets.only(left: 8.0),
-//                                 child: Text(
-//                                   'Cancel',
-//                                   style: TextStyle(
-//                                     color: AppColors.primaryBlue,
-//                                     fontWeight: FontWeight.bold,
-//                                   ),
-//                                 ),
-//                               ),
-//                             )
-//                           : Container();
-//                     }),
-//                   ],
-//                 ),
-//                 // Display search query result line
-//                 Obx(() {
-//                   if (controller.searchQuery.value.isNotEmpty) {
-//                     int totalCount = controller.filteredFriends.length +
-//                         controller.filteredContacts.length +
-//                         controller.filteredAllContacts.length;
-//                     return Padding(
-//                       padding: const EdgeInsets.symmetric(vertical: 8.0),
-//                       child: Row(
-//                         children: [
-//                           Text(
-//                             'Results for "${controller.searchQuery.value}"',
-//                             style: const TextStyle(
-//                               color: AppColors.black,
-//                               fontWeight: FontWeight.bold,
-//                               fontSize: 20,
-//                             ),
-//                           ),
-//                           SizedBox(
-//                             width: Get.width * .02,
-//                           ),
-//                           Text(
-//                             '$totalCount',
-//                             style: const TextStyle(
-//                               color: AppColors.primaryBlue,
-//                               fontWeight: FontWeight.bold,
-//                               fontSize: 16,
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     );
-//                   }
-//                   return Container(); // If search query is empty, don't show the result line
-//                 }),
-
-//                 SizedBox(
-//                   height: Get.height * .02,
-//                 ),
-//                 Obx(() {
-//                   // Only rebuild the sections that depend on the filtered data
-//                   return Column(
-//                     children: [
-//                       // Show 'Friends' section only if there are friends in the list
-//                       if (controller.filteredFriends.isNotEmpty) ...[
-//                         _buildSectionTitle('Friends',
-//                             controller.filteredFriends.length.toString()),
-//                         SizedBox(height: Get.height * .02),
-//                         _buildFriendsList(controller.filteredFriends),
-//                         SizedBox(height: Get.height * .02),
-//                       ],
-
-//                       // Show 'Contacts using Chiip' section only if there are contacts in the list
-//                       if (controller.filteredContacts.isNotEmpty) ...[
-//                         _buildSectionTitle('Contacts using Chiip',
-//                             controller.filteredContacts.length.toString()),
-//                         SizedBox(height: Get.height * .02),
-//                         _buildFriendsList(controller.filteredContacts),
-//                         SizedBox(height: Get.height * .02),
-//                       ],
-
-//                       // Show 'Contacts' section only if there are all contacts in the list
-//                       if (controller.filteredAllContacts.isNotEmpty) ...[
-//                         _buildSectionTitle('Contacts',
-//                             controller.filteredAllContacts.length.toString()),
-//                         SizedBox(height: Get.height * .02),
-//                         _buildFriendsList(controller.filteredAllContacts),
-//                         SizedBox(height: Get.height * .02),
-//                       ],
-
-//                       // If none of the sections have data, you can display a message
-//                       if (controller.filteredFriends.isEmpty &&
-//                           controller.filteredContacts.isEmpty &&
-//                           controller.filteredAllContacts.isEmpty)
-//                         const Text(
-//                           'No matches found',
-//                           style: TextStyle(color: AppColors.grey),
-//                         ),
-//                     ],
-//                   );
-//                 }),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-
-//   Widget _buildSectionTitle(String title, String count) {
-//     return Row(
-//       children: [
-//         Text(
-//           title,
-//           style: const TextStyle(
-//               color: AppColors.black,
-//               fontWeight: FontWeight.bold,
-//               fontSize: 18),
-//         ),
-//         SizedBox(
-//           width: Get.width * .02,
-//         ),
-//         Text(
-//           count,
-//           style: const TextStyle(
-//               color: AppColors.primaryBlue,
-//               fontWeight: FontWeight.bold,
-//               fontSize: 18),
-//         ),
-//       ],
-//     );
-//   }
-
-//   Widget _buildFriendsList(List<Map<String, String>> friendsList) {
-//     return ListView.builder(
-//       shrinkWrap: true,
-//       physics: const BouncingScrollPhysics(),
-//       itemCount: friendsList.length,
-//       itemBuilder: (BuildContext context, int index) {
-//         final data = friendsList[index];
-//         return Padding(
-//           padding: const EdgeInsets.symmetric(vertical: 2),
-//           child: Container(
-//             decoration: BoxDecoration(
-//                 borderRadius: BorderRadius.circular(10),
-//                 color: AppColors.white),
-//             child: Padding(
-//               padding: const EdgeInsets.all(8.0),
-//               child: Row(
-//                 children: [
-//                   SvgPicture.asset(data['image'].toString()),
-//                   SizedBox(
-//                     width: Get.width * .02,
-//                   ),
-//                   Text(
-//                     data['title'].toString(),
-//                     style: const TextStyle(
-//                       color: AppColors.black,
-//                       fontWeight: FontWeight.w500,
-//                       fontSize: 14,
-//                     ),
-//                   ),
-//                   const Spacer(),
-//                   Text(
-//                     data['tralling'].toString(),
-//                     style: const TextStyle(
-//                       color: AppColors.primaryBlue,
-//                       fontWeight: FontWeight.w500,
-//                       fontSize: 14,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
 
 class FriendsPage extends StatelessWidget {
   FriendsPage({super.key});
@@ -381,6 +157,17 @@ class FriendsPage extends StatelessWidget {
                           ),
                           // Using the dynamic section color change
                           Obx(() {
+                            List<Contact> filteredContacts = controller
+                                    .searchQuery.value.isNotEmpty
+                                ? controller.filteredAllContacts
+                                    .where((contact) {
+                                    return contact.displayName
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains(controller.searchQuery.value
+                                            .toLowerCase());
+                                  }).toList()
+                                : controller.filteredAllContacts;
                             return Column(
                               children: [
                                 if (controller.filteredFriends.isNotEmpty) ...[
@@ -430,16 +217,15 @@ class FriendsPage extends StatelessWidget {
                                     },
                                     child: _buildSectionTitle(
                                       'Contacts',
-                                      controller.filteredAllContacts.length
+                                      filteredContacts.length
                                           .toString(),
                                       selectedSection.value ==
                                           'Contacts', // Check if this is the selected section
                                     ),
                                   ),
                                   SizedBox(height: Get.height * .02),
-                                  _buildFriendsList(
-                                      controller.filteredAllContacts,
-                                      AppColors.primaryBlue),
+                                  _buildContactList(
+                            filteredContacts, AppColors.primaryBlue),
                                   SizedBox(height: Get.height * .02),
                                 ],
                                 if (controller.filteredFriends.isEmpty &&
@@ -544,6 +330,49 @@ class FriendsPage extends StatelessWidget {
     );
   }
 
+  Widget _buildContactList(List<Contact> contacts, Color trailingColor) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: contacts.length,
+      itemBuilder: (context, index) {
+        final contact = contacts[index];
+        final photo = contact.photo;
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: AppColors.white,
+            ),
+            child: ListTile(
+              leading: photo != null
+                  ? Image.memory(photo) // Display the photo if available
+                  : Icon(Icons.account_circle,
+                      size: 40, color: AppColors.grey.withOpacity(0.3)),
+              title: Text(
+                contact.displayName.toString(),
+                style: const TextStyle(
+                  color: AppColors.black,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
+              ),
+              trailing: Text(
+                'Invite',
+                style: TextStyle(
+                  color: AppColors.primaryBlue,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Widget pending() {
     return ListView.builder(
       shrinkWrap: true,
@@ -601,7 +430,7 @@ class FriendsPage extends StatelessWidget {
   }
 
   Widget _buildFriendsList(
-      List<Map<String, String>> friendsList, Color tarllingColor) {
+      List<Map<String, dynamic>> friendsList, Color tarllingColor) {
     return ListView.builder(
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
